@@ -6,7 +6,6 @@
 package co.edu.utp.isc.progiv.p4.clase14.modelo;
 
 import co.edu.utp.isc.progiv.p4.clase14.excepciones.FormatoErroneoException;
-import co.edu.utp.isc.progiv.p4.clase14.excepciones.PersonaNoExisteException;
 import java.util.ArrayList;
 import java.util.List;
 

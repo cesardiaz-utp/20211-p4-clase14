@@ -6,12 +6,14 @@
 package co.edu.utp.isc.progiv.p4.clase14.ui;
 
 import co.edu.utp.isc.progiv.p4.clase14.excepciones.FaltanValoresException;
+import co.edu.utp.isc.progiv.p4.clase14.excepciones.FormatoErroneoException;
 import co.edu.utp.isc.progiv.p4.clase14.modelo.Grupo;
 import co.edu.utp.isc.progiv.p4.clase14.modelo.Libreta;
 import co.edu.utp.isc.progiv.p4.clase14.modelo.Persona;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -88,7 +90,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
         jPanel1.add(txtIdentificacion, gridBagConstraints);
 
-        jLabel5.setText("Grupo");
+        jLabel5.setText("Grupo *");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
@@ -204,6 +206,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jPanel2.add(jSeparator1);
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -222,13 +225,16 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int row = tblLibreta.getSelectedRow();
-        if (row == -1) {
+        if (row != -1) {
             if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,
                     "¿Está seguro que desea eliminar esta persona?",
                     getTitle(), JOptionPane.QUESTION_MESSAGE)) {
 
                 Persona p = tableModel.getDato(row);
                 libreta.eliminarPersona(p);
+                
+                tableModel.actualizarDatos();
+                
                 JOptionPane.showMessageDialog(this, "Persona eliminada exitosamente!",
                         getTitle(), JOptionPane.ERROR_MESSAGE);
             }
@@ -359,7 +365,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             throw new FaltanValoresException("La 'Identificación' es un campo obligatorio");
         }
         if (!txtIdentificacion.getText().trim().matches("[0-9]+")) {
-            throw new FaltanValoresException("La 'Identificación' tiene caracteres inválidos");
+            throw new FormatoErroneoException("La 'Identificación' tiene caracteres inválidos");
         }
         if (cmbGrupo.getSelectedIndex() == -1) {
             throw new FaltanValoresException("El 'Grupo' es un campo obligatorio");
